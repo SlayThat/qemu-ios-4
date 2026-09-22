@@ -1,0 +1,26 @@
+{
+  "name": "qemu-ios-4 (Linux, headless-friendly)",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  // Gives you a browser-based desktop at http://localhost:6080 (password: vscode)
+  // so you can run any VNC client (e.g. TigerVNC) against QEMU's own -display vnc
+  // output without installing anything locally.
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {}
+  },
+
+  // 5900 = default QEMU VNC port for display :0, 5901 for :1, etc.
+  // 6080 = noVNC web client from the desktop-lite feature.
+  "forwardPorts": [5900, 5901, 6080],
+  "portsAttributes": {
+    "6080": { "label": "noVNC (browser desktop)", "onAutoForward": "openBrowser" },
+    "5901": { "label": "QEMU VNC output (display :1)" }
+  },
+
+  "postCreateCommand": "chmod +x bootstrap-linux.sh scripts/ios/fetch-firmware.sh && echo 'Run ./bootstrap-linux.sh to build, then scripts/ios/fetch-firmware.sh to grab the IPSW.'",
+
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  }
+}
